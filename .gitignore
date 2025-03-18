@@ -1,0 +1,5 @@
+# crea un gitignore tipico de python
+## Python
+*.pyc
+__pycache__/
+*.py[co]

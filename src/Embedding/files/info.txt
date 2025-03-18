@@ -1,0 +1,76 @@
+{
+  {	
+
+      "idCombo": 1,
+      "codigo": "CB0001",
+      "nombre": "COMBO PUPUSAS",
+      "descripcion": "3 PUPUSAS DE TU ELECCIÓN, ACOMPAÑADAS DE CURTIDO Y SALSA DE TOMATE. INCLUYE BEBIDA",
+      "productos": [
+        {"nombre": "3 pupusas"},
+        {nombre: "bebida"}
+      ]
+    },
+     {
+      "idCombo": 2,
+      "codigo": "CB0002",
+      "nombre": "PUPUSA INDIVIDUAL",
+      "descripcion": "",
+      "productosBase": [
+        {
+          "codigoPt": "PT0274",
+          "descripcion": "PUPUSA REVUELTA",
+          "cantidad": 1,
+          "unidadMedida": "UN",
+          "variantes": [
+            {
+              "codigoPt": "PT0065",
+              "descripcion": "PUPUSA DE FRIJOLES",
+              "cantidad": 1,
+              "unidadMedida": "UN"
+            },
+            {
+              "codigoPt": "PT0302",
+              "descripcion": "PUPUSA DE POLLO",
+              "cantidad": 1,
+              "unidadMedida": "UN"
+            },
+            {
+              "codigoPt": "PT4027",
+              "descripcion": "PUPUSA JALAPEÑO",
+              "cantidad": 1,
+              "unidadMedida": "UN"
+            },
+            {
+              "codigoPt": "PT0424",
+              "descripcion": "PUPUSA QUESO CON LOROCO",
+              "cantidad": 1,
+              "unidadMedida": "UN"
+            },
+            {
+              "codigoPt": "PT0274",
+              "descripcion": "PUPUSA REVUELTA",
+              "cantidad": 1,
+              "unidadMedida": "UN"
+            },
+            {
+              "codigoPt": "PT0300",
+              "descripcion": "PUPUSA FRIJOL\\QUESO",
+              "cantidad": 1,
+              "unidadMedida": "UN"
+            },
+            {
+              "codigoPt": "PT0272",
+              "descripcion": "PUPUSA DE QUESO",
+              "cantidad": 1,
+              "unidadMedida": "UN"
+            },
+            {
+              "codigoPt": "PT0273",
+              "descripcion": "PUPUSA ESPECIAL",
+              "cantidad": 1,
+              "unidadMedida": "UN"
+            }
+          ]
+        }
+      ]
+    },

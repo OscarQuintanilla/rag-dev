@@ -1,0 +1,20 @@
+**Resumen del menú para cajero:**
+
+1. **Nombre del menú:** PUPUSA INDIVIDUAL
+
+2. **Número del menú (idCombo):** 2
+
+3. **Descripción:** El Combo Pupusa Individual incluye una pupusa de tu elección desde diversas opciones disponibles.
+
+4. **Elementos incluidos:**
+   - **Opciones de Pupusas:**
+     - PUPUSA REVUELTA
+     - PUPUSA DE FRIJOLES
+     - PUPUSA DE POLLO
+     - PUPUSA JALAPEÑO
+     - PUPUSA QUESO CON LOROCO
+     - PUPUSA FRIJOL/QUESO
+     - PUPUSA DE QUESO
+     - PUPUSA ESPECIAL
+
+El cliente puede elegir una de las pupusas disponibles en este menú.

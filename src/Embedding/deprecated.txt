@@ -1,0 +1,86 @@
+# from langchain_community.vectorstores import Chroma
+# from langchain_community import embeddings
+from langchain_core.runnables import RunnablePassthrough
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.schema import Document
+import requests
+import json
+
+# URL de tu servidor de LMStudio
+LMSTUDIO_URL = "http://127.0.0.1:1234/v1/chat/completions"
+
+# get a json file and put it into a list
+with open('files/menu.json', 'r', encoding='utf-8') as file:
+    text = file.read()
+text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+chunks = text_splitter.split_text(text)
+documents = [Document(page_content=chunk) for chunk in chunks]
+
+# convert documents to embeddings and store them
+print('Preparing for embedding.')
+vectorestore = Chroma(
+    collection_name="rag_chroma",
+    embedding_function=embeddings.OllamaEmbeddings(model="nomic-embed-text")
+)
+
+if not vectorestore.get():
+    vectorestore.add_documents(documents)
+else:
+    print('Already populated.')
+
+
+retriver = vectorestore.as_retriever(search_kwargs={"k": 1})  # Ajustar k a 1 si la colección es pequeña
+
+# apply RAG
+
+print('Starting RAG')
+rag_template="""Answer based only on the following context and always in spanish:
+{context}
+Question: {question}
+"""
+rag_template = ChatPromptTemplate.from_template(rag_template)
+
+def lmstudio_generate(prompt):
+    # Convert prompt to a list of messages
+    body = {
+        "model": "nombre-del-modelo",
+        "messages": [
+            {
+                "role": "system",
+                "content": "Eres un asistente útil."
+            },
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ],
+        "messages": "",
+        "temperature": 0.7,
+        "max_tokens": 150,
+        "top_p": 1.0,
+        "frequency_penalty": 0,
+        "presence_penalty": 0
+    }
+    # make it a string
+    print(rag_template)
+    try:
+        response = requests.post("http://127.0.0.1:1234/v1/chat/completions", json=json.dumps(body))
+    except:
+        print("error at quering server")
+
+    if response.status_code == 200:
+        return response.json().get('response', '')
+    else:
+        raise Exception(f"Error en la respuesta del servidor: {response.status_code}")
+
+rag_chain = (
+    {"context": retriver, "question": RunnablePassthrough()}
+    | rag_template
+    | lmstudio_generate
+    | StrOutputParser()
+)
+
+print(rag_chain.invoke({"question":'¿qué es el menú de pupusas?'}))
+
