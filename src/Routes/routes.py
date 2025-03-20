@@ -2,7 +2,7 @@ from fastapi import APIRouter
 import logging
 from pydantic import BaseModel
 
-from src.Controllers.LMQuering import send_to_llm
+from src.Controllers.LMQuering import chat_to_llm_server
 
 class UserMessage(BaseModel):
     message: str
@@ -15,6 +15,5 @@ def confirm_test():
 
 @app.post("/api/chat")
 def send_message(req: UserMessage):
-    llm_response = send_to_llm(req.message)
-
-    return {"response": llm_response.get('choices', [{}])[0].get('message', {}).get('content', '')}
+    object_response = chat_to_llm_server(req.message)
+    return object_response

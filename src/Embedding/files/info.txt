@@ -1,6 +1,5 @@
 {
-  {	
-
+  
       "idCombo": 1,
       "codigo": "CB0001",
       "nombre": "COMBO PUPUSAS",

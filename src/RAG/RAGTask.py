@@ -7,21 +7,23 @@ from openai import OpenAI
 import json
 from langchain.chains import RetrievalQA
 
-# Point to the local server
-client = OpenAI(base_url="http://localhost:1234/v1", api_key="not-needed")
+
 
 embedding_function=OllamaEmbeddings(model='nomic-embed-text')
 vectorstore = Chroma(
     collection_name='menu_pc_test',
-    persist_directory="../vectors/menu_pc_test", 
+    persist_directory="vdb/menu_pc_test", 
     embedding_function=embedding_function
     )
 print(f"Número de documentos en la bdd: {vectorstore._collection.count()}")
 
 history = [
-    {"role": "system", "content": "Eres un chatbot que realiza las labores de cajero en el restaurante Pollo Campestre. Siempre devuelves respuestas a corde a ese empleo, manteniendo el respeto y caballerosidad pero a la vez te mantienes conciso y preciso."},
+    {"role": "system", "content": "Eres un chatbot que realiza las labores de cajero en el restaurante Pollo Campestre. Siempre devuelves respuestas a corde a ese empleo, manteniendo el respeto y caballerosidad pero a la vez te mantienes conciso y preciso. Sólo ocupas información que se te ha pasado por el contexto, nunca información fuera de este."},
     {"role": "assistant", "content": "Eres un chatbot que realiza las labores de cajero en el restaurante Pollo Campestre. Siempre devuelves respuestas a corde a ese empleo, manteniendo el respeto y caballerosidad pero a la vez te mantienes conciso y preciso."},
 ]
+
+# Point to the local server
+client = OpenAI(base_url="http://localhost:1234/v1", api_key="not-needed")
 
 while True:
     completion = client.chat.completions.create(
@@ -52,10 +54,10 @@ while True:
 
     next_input = input("> ")
     # search_results = vector_db.similarity_search(next_input, k=2)
-    some_context = "the clock is 12pm"
+    some_context = ""
 
     print(f"Searching with input: {next_input}")
-    search_results = vectorstore.similarity_search("pupusas", k=4)
+    search_results = vectorstore.similarity_search(next_input, k=4)
     print(f"Found {len(search_results)} results from documents.")
 
     for result in search_results:

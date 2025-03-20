@@ -1,14 +1,16 @@
+import os
+from dotenv import load_dotenv
 from langchain_chroma import Chroma
 from langchain_ollama import OllamaEmbeddings
-# from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import DirectoryLoader
-# from langchain_community.document_loaders import TextLoader
 from uuid import uuid4
+
+load_dotenv()
 
 # loaders = [PyPDFLoader('./pdfs/brain-gliomas-patient.pdf')]
 # loaders = [JSONLoader('./files/menu.json', jq_schema='.')] #cargamos el archivo a procesar
-loaders = [DirectoryLoader('../menus/', glob='**/*.txt')]
+loaders = [DirectoryLoader(os.getenv('FILES_TO_EMBED_PATH'), glob='**/*.txt')]
 # leer .txt
 # loaders = [TextLoader('./files/info.txt', ))]
 
@@ -26,8 +28,8 @@ print(len(docs))
 
 vectorstore = Chroma(
     embedding_function=embedding_function, 
-    collection_name='menu_pc_test',
-    persist_directory="../vectors/menu_pc_test"
+    collection_name=os.getenv('COLLECTION_VDB_NAME'),
+    persist_directory=os.getenv('VECTOR_DB_PATH')
 )
 
 uuids = [str(uuid4()) for _ in range(len(docs))]
