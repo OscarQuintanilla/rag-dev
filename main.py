@@ -10,3 +10,4 @@ if __name__ == "__main__":
 # This server uses fastapi to handle queries
 # run it with:
 # uvicorn main:app --reload
+# python -m uvicorn main:app --reload

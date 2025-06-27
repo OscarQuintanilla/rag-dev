@@ -8,11 +8,13 @@ import json
 from langchain.chains import RetrievalQA
 
 
-
+# Definimos el modelo de embedding
 embedding_function=OllamaEmbeddings(model='nomic-embed-text')
+
+# Executes embedding and defines it's config
 vectorstore = Chroma(
-    collection_name='menu_pc_test',
-    persist_directory="vdb/menu_pc_test", 
+    collection_name=os.getenv('COLLECTION_VDB_NAME'),
+    persist_directory=os.getenv('VECTOR_DB_PATH'), 
     embedding_function=embedding_function
     )
 print(f"Número de documentos en la bdd: {vectorstore._collection.count()}")
