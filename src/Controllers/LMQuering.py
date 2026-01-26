@@ -41,8 +41,10 @@ REGLAS:
 - Responde únicamente con la consulta SQL, sin explicaciones adicionales. NO agregues caracteres como ", ', etc. Solo la consulta SQL lista para ejecutar.
 - Si existe una tabla cuyo nombre coincide exactamente con la entidad preguntada,
   esa tabla debe considerarse la fuente principal.
+- Si existe una tabla llamada "Dealer", úsala para contar dealers.
 - Columnas con el mismo nombre en otras tablas NO definen la entidad.
 - Si hay una tabla llamada "Dealer", úsala para contar dealers.
+- SIEMPRE usa un ALIAS (AS) claro para cada columna seleccionada, usando snake_case por ejemplo: "SELECT COUNT(*) AS total_ventas".
 
 Si no existe una tabla que defina claramente la entidad,
 responde que la información es insuficiente.
