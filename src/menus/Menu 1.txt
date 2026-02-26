@@ -1,13 +1,1 @@
-**Resumen del menú para cajero:**
-
-1. **Nombre del menú:** COMBO PUPUSAS
-
-2. **Número del menú (idCombo):** 1
-
-3. **Descripción:** El Combo Pupusas incluye 3 pupusas de tu elección, acompañadas de curtido y salsa de tomate. Además, se incluye una bebida.
-
-4. **Elementos incluidos:**
-   - 3 pupusas (de tu elección)
-   - Curtido
-   - Salsa de tomate
-   - Bebida
+Combo Pupusas: tiene el idCombo 1, El Combo Pupusas incluye 3 pupusas de tu elección, acompañadas de curtido, salsa de tomate, además, se incluye una bebida.

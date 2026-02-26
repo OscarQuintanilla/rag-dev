@@ -7,6 +7,7 @@ from openai import OpenAI
 import json
 from langchain.chains import RetrievalQA
 
+# 
 
 # Definimos el modelo de embedding
 embedding_function=OllamaEmbeddings(model='nomic-embed-text')
