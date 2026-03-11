@@ -1,0 +1,28 @@
+# Table: NetDataIA.dbo.vw_VentasPorTipoCliente
+**Propósito:** Resumen de ventas consolidado por segmento o tipo de cliente, país, sucursal (dealer) y fecha. Ideal para responder "cuánto aporta cada tipo de cliente (mayorista, minorista, etc.) a los ingresos".
+
+## Columnas
+- `CodPais` (string): Código del país. ES OBLIGATORIO usarlo en el WHERE (usa 'sal' por defecto si el usuario no especifica).
+- `Dealer` (int): ID de la sucursal o empresa. ES OBLIGATORIO usarlo en el WHERE (usa 1 por defecto si el usuario no especifica).
+- `TipoCliente` (string): Código interno del segmento de cliente. SIEMPRE inclúyelo en el SELECT, GROUP BY y ORDER BY.
+- `Descripcion` (string): Nombre legible del segmento (ej: 'Mayorista', 'Minorista'). SIEMPRE inclúyelo en el SELECT, GROUP BY y ORDER BY.
+- `TotalDocumentos` (int): Cantidad de facturas/documentos emitidos a este segmento. (Métrica)
+- `VentasGravadas` (decimal): Monto de ventas sin IVA. (Métrica)
+- `IVA` (decimal): Monto del IVA de las ventas. (Métrica)
+- `TotalVentas` (decimal): Ingreso total bruto, suma de Gravadas e IVA. (Métrica)
+- `Fecha` (date): Fecha de la transacción. Indispensable para filtrar rangos de tiempo (WHERE Fecha >= ... AND Fecha <= ...).
+
+## Notas Críticas para el LLM
+- REGLA ESTRICTA DE FILTRADO: Siempre debes incluir `CodPais = 'sal'` y `Dealer = 1` en el WHERE, a menos que el usuario indique otros valores.
+- REGLA ESTRICTA DE AGRUPACIÓN: Siempre debes incluir `TipoCliente` y `Descripcion` tanto en el `GROUP BY` como en el `ORDER BY` y el `SELECT`.
+- REGLA DE FECHAS (IMPORTANTE): Siempre usa el formato `DD/MM/YYYY` para las fechas (ej: `01/01/2025`). Asegúrate de que el modelo NO intente usar YYYY-MM-DD ni YYYYMMDD.
+
+## Ejemplo de Consulta (Plantilla Estricta)
+```sql
+SELECT TipoCliente, Descripcion, SUM(TotalVentas) AS TotalVentas
+FROM NetDataIA.dbo.vw_VentasPorTipoCliente
+WHERE Fecha BETWEEN '01/01/2025' AND '28/02/2026' 
+  AND CodPais = 'sal' AND Dealer = 1
+GROUP BY TipoCliente, Descripcion
+ORDER BY TipoCliente, Descripcion;
+```

@@ -1,0 +1,35 @@
+# Stored Procedure: NetDataIA.dbo.usp_VtasGerencia
+**Propósito:** Reporte de ventas gerencial que permite obtener información filtrando por país, sucursal (dealer), tienda, cajero, vendedor, cliente, tipo de documento, forma de pago y un rango de fechas.
+
+## Parámetros
+- `@CodPais` (string): Código del país. ES OBLIGATORIO (usa 'SAL' por defecto si el usuario no especifica).
+- `@Dealer` (int): ID de la sucursal o empresa. ES OBLIGATORIO (usa 1 por defecto si el usuario no especifica).
+- `@Tda` (string): Código o nombre de la tienda/sucursal física. Dejar vacío `''` si no se filtra.
+- `@Cajero` (string): Código o nombre del cajero. Dejar vacío `''` si no se filtra.
+- `@Vendedor` (string): Código o nombre del vendedor. Dejar vacío `''` si no se filtra.
+- `@Cliente` (string): Código o nombre del cliente. Dejar vacío `''` si no se filtra.
+- `@Tipo` (string): Tipo de documento (ej. factura, ticket). Dejar vacío `''` si no se filtra.
+- `@FormaPago` (string): Forma de pago (ej. efectivo, tarjeta). Dejar vacío `''` si no se filtra.
+- `@Desde` (string): Fecha de inicio del reporte. Indispensable para filtrar rangos de tiempo.
+- `@Hasta` (string): Fecha de fin del reporte. Indispensable para filtrar rangos de tiempo.
+
+## Notas Críticas para el LLM
+- REGLA ESTRICTA DE FILTRADO: Siempre debes incluir `@CodPais = N'SAL'` y `@Dealer = 1`, a menos que el usuario indique explícitamente otros valores.
+- REGLA DE FECHAS (IMPORTANTE): Siempre usa el formato `DD/MM/YYYY` para las fechas en los parámetros `@Desde` y `@Hasta` (ej: `'01/01/2026'`). Asegúrate de que el modelo NO intente usar YYYY-MM-DD ni YYYYMMDD.
+- VALORES POR DEFECTO: Para los filtros opcionales (`@Tda`, `@Cajero`, `@Vendedor`, `@Cliente`, `@Tipo`, `@FormaPago`), si el usuario no los menciona, debes pasar obligatoriamente una cadena vacía `''`.
+- SINTAXIS DE EJECUCIÓN: Al tratarse de un Stored Procedure, la consulta siempre debe generarse usando la instrucción `EXEC [dbo].[usp_VtasGerencia]` seguida de sus parámetros. No utilices SELECT FROM.
+
+## Ejemplo de Consulta (Plantilla Estricta)
+```sql
+EXEC [dbo].[usp_VtasGerencia]
+@CodPais = N'SAL',
+@Dealer = 1,
+@Tda = '',
+@Cajero = '',
+@Vendedor = '',
+@Cliente = '',
+@Tipo = '',
+@FormaPago = '',
+@Desde = '01/01/2026',
+@Hasta = '31/01/2026';
+```

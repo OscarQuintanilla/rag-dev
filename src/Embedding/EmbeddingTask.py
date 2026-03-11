@@ -2,17 +2,32 @@ import os
 from dotenv import load_dotenv
 from langchain_chroma import Chroma
 from langchain_ollama import OllamaEmbeddings
-from langchain_community.document_loaders import DirectoryLoader
+from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from uuid import uuid4
 
 load_dotenv()
 
-# 1️⃣ Cargar documentos (1 archivo = 1 doc)
-loader = DirectoryLoader(
-    '../DBBSchemas/Embeddings',
-    glob='**/*.txt'
+# # 1️⃣ Cargar documentos (1 archivo = 1 doc)
+# loader = DirectoryLoader(
+#     '../DBBSchemas/Embeddings',
+#     glob='**/*.txt'
+# )
+
+loader_views = DirectoryLoader(
+    '../DBBSchemas/views',
+    glob='**/*.txt',
+    show_progress=True,
+    use_multithreading=True
 )
-docs = loader.load()
+
+loader_usp = DirectoryLoader(
+    '../DBBSchemas/usp',
+    glob='**/*.txt',
+    show_progress=True,
+    use_multithreading=True
+)
+
+docs = loader_views.load() + loader_usp.load()
 
 print(f"Documentos cargados: {len(docs)}")
 
@@ -31,4 +46,3 @@ vectorstore = Chroma(
 uuids = [str(uuid4()) for _ in docs]
 vectorstore.add_documents(documents=docs, ids=uuids)
 print(f"Chunks indexados: {vectorstore._collection.count()}")
-
