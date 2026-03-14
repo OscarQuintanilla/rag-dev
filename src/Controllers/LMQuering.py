@@ -31,19 +31,22 @@ _vectorstore = Chroma(
 )
 
 # Sends a message to the LLM server and returns the response
-def chat_to_llm_server(message):    
-    history = history_init()
+def chat_to_llm_server(message, history=None):
+    is_new_conversation = not history
 
-    # Perform semantic search using the singleton vectorstore
-    print(f"🔍 Searching for: {message}")
-    semantic_search = hybrid_search(_vectorstore, message, k=10)
-    print(f"📄 Found {len(semantic_search)} documents")
+    if is_new_conversation:
+        history = history_init()
 
-    context_parts = [doc.page_content for doc in semantic_search]
-    context = "\n\n---\n\n".join(context_parts)
+        # Perform semantic search using the singleton vectorstore
+        print(f"🔍 Searching for: {message}")
+        semantic_search = hybrid_search(_vectorstore, message, k=10)
+        print(f"📄 Found {len(semantic_search)} documents")
 
-    # Build the RAG prompt with context
-    user_message = f"""
+        context_parts = [doc.page_content for doc in semantic_search]
+        context = "\n\n---\n\n".join(context_parts)
+
+        # Build the RAG prompt with context (first message)
+        user_message = f"""
 Eres un asistente que genera consultas SQL Server (T-SQL).
 
 REGLAS:
@@ -69,9 +72,12 @@ CONTEXTO (ESQUEMA):
 PREGUNTA DEL USUARIO:
 {message}
 """
-
-
-    add_message_to_history(history, 'user', user_message)
+        add_message_to_history(history, 'user', user_message)
+    else:
+        # Continuing conversation – just append the follow-up message directly
+        context = ""
+        print(f"🔄 Continuing conversation. User follow-up: {message}")
+        add_message_to_history(history, 'user', message)
     
     # Request the LLM server
     # llm_client = OpenAI(base_url=os.getenv('LLM_SERVER_URL'), api_key='not-needed')

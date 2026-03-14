@@ -8,6 +8,7 @@ from src.Controllers.SQLController import execute_sql_from_request
 
 class UserMessage(BaseModel):
     message: str
+    history: list = []
 
 class SQLRequest(BaseModel):
     query: str
@@ -28,7 +29,7 @@ def confirm_test():
 
 @app.post("/api/chat")
 def send_message(req: UserMessage):
-    object_response = chat_to_llm_server(req.message)
+    object_response = chat_to_llm_server(req.message, req.history)
     return object_response
 
 @app.post("/api/infer-views")
